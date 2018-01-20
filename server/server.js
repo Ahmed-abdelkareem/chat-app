@@ -16,12 +16,17 @@ io.on("connection", socket => {
   socket.on("disconnect", () => {
     console.log("User disconnected");
   });
-  socket.emit("newEmail", {
-    from: "Ahmed@gmail.com",
-    text: "Hi this is a test E-mail"
+
+  socket.emit("newMessage", {
+    from: "admin",
+    text: "welcome to the chat app",
+    createAt: new Date().getTime()
   });
-  socket.on("createEmail", newEmail => {
-    console.log(newEmail);
+
+  socket.broadcast.emit("newMessage", {
+    from: "admin",
+    text: "new user joined",
+    createAt: new Date().getTime()
   });
 
   socket.on("createMessage", message => {
@@ -31,6 +36,12 @@ io.on("connection", socket => {
       text: message.text,
       createAt: new Date().getTime()
     });
+
+    /* socket.broadcast.emit("newMessage", {
+      from: message.from,
+      text: message.text,
+      createAt: new Date().getTime()
+    });*/
   });
 });
 
